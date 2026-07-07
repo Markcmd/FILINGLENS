@@ -4,6 +4,17 @@
 
 ---
 
+## 2026-07-07 — Step 1.2: EDGAR ingest (done)
+**Done:** `src/filinglens/ingest.py` — submissions index → filter latest 3 10-Ks → download primary HTML doc to `data/raw/{ticker}/{fy}_10-K.htm` with a `.meta.json` sidecar (accession, dates, URL) that later becomes the citation source. Frozen `Filing` dataclass; pure `select_10ks()` for testability; caching (skip if downloaded); User-Agent + rate-limit politeness. `requests` added as first dependency. 5 new unit tests against a fake submissions index (filtering/ordering, accession normalization, URL construction, paths, cache-skip) — 9/9 pass. Commit `9630b59`.
+
+**Mark's thoughts:** Approved design as proposed (latest 3 fiscal years, primary document only).
+
+**Claude's suggestions:** Keep `select_10ks` pure (no I/O) so the core logic tests need no mocking; test cache-skip by passing `session=None` — if the cache is respected no HTTP attribute is ever touched. Caught own bug pre-commit: `ingest_all` collected only the last path per ticker.
+
+**Decision:** Committed. Claude's sandbox can't reach sec.gov, so Mark runs `python -m filinglens.ingest` locally to pull the 9 filings. Next: design step 1.3 (parse + chunk).
+
+---
+
 ## 2026-07-07 — Phase 1 kickoff + step 1.1: scaffold (done)
 **Done:** Broke Phase 1 into 7 sub-steps (scaffold → ingest → parse/chunk → embed/index → retrieve/answer → eval set → FastAPI); implemented 1.1: `pyproject.toml` (hatchling, empty deps, pytest as dev extra), `.gitignore`, README with status + roadmap, `src/filinglens/` with `config.py` (company CIKs, data paths, EDGAR User-Agent), and smoke tests. All 4 tests pass. Commit `9c2643f`.
 
