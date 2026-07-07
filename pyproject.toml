@@ -3,7 +3,9 @@ name = "filinglens"
 version = "0.1.0"
 description = "SEC filing Q&A with verifiable citations"
 requires-python = ">=3.10"
-dependencies = []
+dependencies = [
+    "requests",
+]
 
 [project.optional-dependencies]
 dev = ["pytest"]
