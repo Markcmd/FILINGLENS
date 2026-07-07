@@ -7,7 +7,9 @@ ROOT_DIR = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT_DIR / "data"
 RAW_DIR = DATA_DIR / "raw"  # downloaded filings, as fetched from EDGAR
 
-# Companies in scope for Phase 1: ticker -> SEC CIK (zero-padded to 10 digits)
+# SEC = U.S. Securities and Exchange Commission, the agency that stores public company filings.
+# CIK = Central Index Key, the SEC's unique identifier for a filing entity/company.
+# Companies in scope for Phase 1: stock ticker -> SEC CIK (zero-padded to 10 digits)
 COMPANIES: dict[str, str] = {
     "AAPL": "0000320193",
     "MSFT": "0000789019",
