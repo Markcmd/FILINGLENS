@@ -1,0 +1,16 @@
+[project]
+name = "filinglens"
+version = "0.1.0"
+description = "SEC filing Q&A with verifiable citations"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
