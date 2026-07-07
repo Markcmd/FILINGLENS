@@ -13,12 +13,22 @@
 ## Steps
 
 - [x] 1. Define project scope & goals — approved 2026-07-06
-- [ ] 2. **Phase 1 (by Jul 10) — core RAG slice (Python):** download filings from SEC EDGAR, chunk + embed, CLI or minimal API answering questions with cited passages. Includes test setup: pytest from day one, unit tests for chunking/parsing, plus a small golden Q&A eval set to measure retrieval quality. Mentionable in application.
+- [>] 2. **Phase 1 (by Jul 10) — core RAG slice (Python):** download filings from SEC EDGAR, chunk + embed, CLI or minimal API answering questions with cited passages. Includes test setup: pytest from day one, unit tests for chunking/parsing, plus a small golden Q&A eval set to measure retrieval quality. Mentionable in application.
 - [ ] 3. **Phase 2 — storage layer:** MongoDB for raw/parsed filing documents (semi-structured), Postgres + pgvector for chunks, embeddings, citations, Q&A history. Tests: integration tests against real local DBs.
 - [ ] 4. **Phase 3 — React/TypeScript UI:** question box, answer view with clickable citations highlighting source passages. Tests: Vitest + React Testing Library for components.
 - [ ] 5. **Phase 4 — extractor + XBRL verification:** LLM extracts key financials (revenue, net income, EPS…) from filing text → verify against XBRL ground truth (EDGAR companyfacts API) → per-figure verdict (match / mismatch / not found) + accuracy scorecard. Q&A answers auto-verify numeric claims. Tests: extraction accuracy measured against XBRL across all ingested filings.
 - [ ] 6. **Phase 5 — agent + audit trail:** multi-step agent (e.g. compare risk factors across years) with per-step audit trail; agent can call the Phase 4 verifier as a tool. Tests: extend golden eval set to agent tasks.
 - [ ] 7. **Phase 6 — AWS deploy:** get it live, with tests running in CI (GitHub Actions) before deploy.
+
+## Phase 1 sub-steps (approved 2026-07-07)
+
+- [x] 1.1 Scaffold — pyproject, src/ layout, config.py, pytest smoke tests (2026-07-07)
+- [ ] 1.2 Ingest — EDGAR client downloading AAPL/MSFT/NVDA 10-Ks, cached to `data/raw/`
+- [ ] 1.3 Parse + chunk — section-aware item splitting, ~600-token chunks with citation metadata
+- [ ] 1.4 Embed + index — sentence-transformers → ChromaDB
+- [ ] 1.5 Retrieve + answer — provider abstraction, Ollama answers with citations, CLI
+- [ ] 1.6 Golden Q&A eval set — `eval/golden_qa.jsonl` + retrieval scoring
+- [ ] 1.7 FastAPI wrapper — minimal `/ask` endpoint
 
 ## Phase 1 design (approved 2026-07-06)
 Pipeline: `ingest → parse → chunk → embed → retrieve → answer with citations`

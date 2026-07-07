@@ -4,6 +4,17 @@
 
 ---
 
+## 2026-07-07 — Phase 1 kickoff + step 1.1: scaffold (done)
+**Done:** Broke Phase 1 into 7 sub-steps (scaffold → ingest → parse/chunk → embed/index → retrieve/answer → eval set → FastAPI); implemented 1.1: `pyproject.toml` (hatchling, empty deps, pytest as dev extra), `.gitignore`, README with status + roadmap, `src/filinglens/` with `config.py` (company CIKs, data paths, EDGAR User-Agent), and smoke tests. All 4 tests pass. Commit `9c2643f`.
+
+**Mark's thoughts:** Approved sub-step breakdown and scaffold design as proposed.
+
+**Claude's suggestions:** Start deps empty and add each at the step that needs it — clearer commit history to walk through in interviews. Use `src/` layout over flat — standard for real projects, forces installed-package imports. Ollama/embedding steps (1.4–1.5) will run on Mark's machine since Claude's sandbox can't run models.
+
+**Decision:** Scaffold committed. Next: design step 1.2 (EDGAR ingest) before implementing.
+
+---
+
 ## 2026-07-06 — Plan amendment: extractor + XBRL verification added as Phase 4
 **Done:** Added the SEC filing extractor with XBRL verification to PLAN.md; agent → Phase 5, AWS → Phase 6.
 
