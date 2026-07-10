@@ -4,6 +4,17 @@
 
 ---
 
+## 2026-07-07 — Step 1.3: parse + chunk (done)
+**Done:** `parse.py` — BeautifulSoup(+lxml) → normalized *canonical text* (the string all citation offsets point into) + section map via item-heading regex; ToC false positives handled by keeping the last occurrence of each item code, out-of-order stragglers dropped, whole-doc fallback if detection fails. `chunk.py` — paragraph packing into ≤500-word chunks (small-paragraph overlap), never crossing sections; each chunk = id + exact char offsets + filing metadata = the citation. Deps: beautifulsoup4, lxml. 8 new tests (17 total, all pass). Ran on all 9 real filings: 22–23 sections each, 973 chunks, **0 offset round-trip failures**.
+
+**Mark's thoughts:** Ran the EDGAR ingest locally (all 9 filings downloaded); read through the full ingest code; approved 1.3 design as proposed, including word-count budget over a real tokenizer.
+
+**Claude's suggestions:** Make `text[char_start:char_end] == chunk.text` the invariant the whole verification story rests on — tested per-chunk across all filings. Bug found by the tests before commit: chunk overlap doubled sizes when the carried paragraph was itself a hard-split 500-word piece; fixed by capping overlap paragraphs at 120 words.
+
+**Decision:** Committed. Next: design step 1.4 (embed + index into ChromaDB) — runs on Mark's machine.
+
+---
+
 ## 2026-07-07 — Step 1.2: EDGAR ingest (done)
 **Done:** `src/filinglens/ingest.py` — submissions index → filter latest 3 10-Ks → download primary HTML doc to `data/raw/{ticker}/{fy}_10-K.htm` with a `.meta.json` sidecar (accession, dates, URL) that later becomes the citation source. Frozen `Filing` dataclass; pure `select_10ks()` for testability; caching (skip if downloaded); User-Agent + rate-limit politeness. `requests` added as first dependency. 5 new unit tests against a fake submissions index (filtering/ordering, accession normalization, URL construction, paths, cache-skip) — 9/9 pass. Commit `9630b59`.
 

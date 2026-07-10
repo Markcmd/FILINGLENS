@@ -6,6 +6,8 @@ from pathlib import Path
 ROOT_DIR = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT_DIR / "data"
 RAW_DIR = DATA_DIR / "raw"  # downloaded filings, as fetched from EDGAR
+PARSED_DIR = DATA_DIR / "parsed"  # canonical text + section map per filing
+CHUNKS_DIR = DATA_DIR / "chunks"  # citation-ready chunks (JSONL per filing)
 
 # SEC = U.S. Securities and Exchange Commission, the agency that stores public company filings.
 # CIK = Central Index Key, the SEC's unique identifier for a filing entity/company.

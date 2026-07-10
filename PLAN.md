@@ -24,7 +24,7 @@
 
 - [x] 1.1 Scaffold — pyproject, src/ layout, config.py, pytest smoke tests (2026-07-07)
 - [x] 1.2 Ingest — EDGAR client downloading AAPL/MSFT/NVDA 10-Ks, cached to `data/raw/` (2026-07-07; Mark to run `python -m filinglens.ingest` locally)
-- [ ] 1.3 Parse + chunk — section-aware item splitting, ~600-token chunks with citation metadata
+- [x] 1.3 Parse + chunk — section-aware item splitting, ~600-token chunks with citation metadata (2026-07-07; 973 chunks across 9 filings, offsets verified)
 - [ ] 1.4 Embed + index — sentence-transformers → ChromaDB
 - [ ] 1.5 Retrieve + answer — provider abstraction, Ollama answers with citations, CLI
 - [ ] 1.6 Golden Q&A eval set — `eval/golden_qa.jsonl` + retrieval scoring
