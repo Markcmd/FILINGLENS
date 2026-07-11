@@ -54,7 +54,12 @@ def test_ask_returns_answer_with_resolved_citations(client):
 
 
 def test_search_returns_scored_hits(client):
-    r = client.get("/search", params={"q": "patent disputes litigation", "k": 2})
+    # FakeEmbedder is a byte-hash, not semantic: only near-identical text is
+    # guaranteed to rank first, so the query mirrors the litigation chunk.
+    r = client.get(
+        "/search",
+        params={"q": "litigation risks include patent disputes in many regions!", "k": 2},
+    )
     assert r.status_code == 200
     hits = r.json()
     assert len(hits) == 2
