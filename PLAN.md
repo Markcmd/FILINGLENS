@@ -13,7 +13,7 @@
 ## Steps
 
 - [x] 1. Define project scope & goals — approved 2026-07-06
-- [>] 2. **Phase 1 (by Jul 10) — core RAG slice (Python):** download filings from SEC EDGAR, chunk + embed, CLI or minimal API answering questions with cited passages. Includes test setup: pytest from day one, unit tests for chunking/parsing, plus a small golden Q&A eval set to measure retrieval quality. Mentionable in application.
+- [x] 2. **Phase 1 — core RAG slice (Python), complete 2026-07-11:** download filings from SEC EDGAR, chunk + embed, CLI or minimal API answering questions with cited passages. Includes test setup: pytest from day one, unit tests for chunking/parsing, plus a small golden Q&A eval set to measure retrieval quality. Mentionable in application.
 - [ ] 3. **Phase 2 — storage layer:** MongoDB for raw/parsed filing documents (semi-structured), Postgres + pgvector for chunks, embeddings, citations, Q&A history. Tests: integration tests against real local DBs.
 - [ ] 4. **Phase 3 — React/TypeScript UI:** question box, answer view with clickable citations highlighting source passages. Tests: Vitest + React Testing Library for components.
 - [ ] 5. **Phase 4 — extractor + XBRL verification:** LLM extracts key financials (revenue, net income, EPS…) from filing text → verify against XBRL ground truth (EDGAR companyfacts API) → per-figure verdict (match / mismatch / not found) + accuracy scorecard. Q&A answers auto-verify numeric claims. Tests: extraction accuracy measured against XBRL across all ingested filings.
@@ -28,7 +28,7 @@
 - [x] 1.4 Embed + index — sentence-transformers → ChromaDB (2026-07-07; Mark ran locally, 973 vectors indexed)
 - [x] 1.5 Retrieve + answer — provider abstraction, Ollama answers with citations, CLI (2026-07-08; Mark ran CLI, cited answer verified; 29 tests pass locally)
 - [x] 1.6 Golden Q&A eval set (2026-07-08; baseline: hit@6 87%, MRR 0.76, answers 47% — see README)
-- [>] 1.7 FastAPI wrapper — `/ask`, `/search`, `/health` (code done 2026-07-08; awaiting Mark's local `pytest` + `uvicorn filinglens.api:app` check)
+- [x] 1.7 FastAPI wrapper — `/ask`, `/search`, `/health` (2026-07-11; Mark verified via /docs — cited answer returned end-to-end)
 
 ## Phase 1 design (approved 2026-07-06)
 Pipeline: `ingest → parse → chunk → embed → retrieve → answer with citations`

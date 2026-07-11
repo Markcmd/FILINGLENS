@@ -4,6 +4,19 @@
 
 ---
 
+## 2026-07-11 — Phase 1 COMPLETE: API verified end-to-end
+**Done:** Mark verified the full stack on his machine: 37 tests pass (after fixing a test that assumed the non-semantic FakeEmbedder would rank like a real one — caught by Mark's run), `httpx`→`httpx2` dev-dep swap silenced the starlette deprecation, and `/ask` via Swagger `/docs` returned a synthesized, multi-citation answer ([3][4][5][6] across FY2023–2025 Apple 10-Ks) for the supply-chain question.
+
+**Debugging lessons along the way (good interview material):**
+- `uvicorn` resolved to system Python 3.12 instead of the venv despite `(.venv)` in the prompt — fixed with `python -m uvicorn`; lesson: `python -m` pins the interpreter.
+- Swagger's placeholder values (`"ticker": "string"`) silently became real filters → zero hits → the API correctly refused with "Not found in the provided filings" instead of hallucinating. Accidental production test of the unanswerable path; it behaved as designed.
+
+**Application status:** Finpilot deadline missed (window closed 2026-07-10 before submission); tracker updated. FilingLens continues as the flagship portfolio project — next target: FilmTools application (due 2026-07-29, wants GitHub/portfolio link).
+
+**Decision:** Phase 1 closed. Phase 2 (MongoDB + Postgres/pgvector) design discussion starts in a new session.
+
+---
+
 ## 2026-07-08 — Step 1.7: FastAPI wrapper (code done) + Phase 1 retrospective
 **Done:** `api.py` — `POST /ask` (the future React UI's endpoint), `GET /search` (raw scored hits), `GET /health` (status + chunk count); Pydantic request/response models give validation (422s) and auto-generated interactive docs at `/docs`; embedder/collection/LLM are lru_cached singletons so the model loads once, not per request; tests override the dependency functions with fakes — 4 new tests via TestClient, no Ollama/model/disk needed. Deps: fastapi, uvicorn (+httpx dev). README rewritten with full usage. Expect 37 tests locally.
 
