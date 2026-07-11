@@ -4,6 +4,15 @@
 
 ---
 
+## 2026-07-11 — Mark's Phase 1 reflection (recorded at his request)
+**Mark's thoughts (verbatim spirit):** Claude is amazing, but he barely understands the code and logic, which feels bad — the desire to know everything collides with anxiety. Line-by-line study is too slow at his current level; picking key points to understand deeply feels reasonable. Wants interview questions covering only those points, and a measurable understanding metric (target: ~70%).
+
+**Response:** Created `Phase1_Study_Guide.md` (outside the repo, next to FilingLens/): 10 concepts in 3 tiers, study methods (trace one chunk end-to-end, Feynman technique, modify-to-learn experiments), a 20-question self-test with 0/0.5/1 scoring → percentage, pass = ≥70% with no Tier-1 zeros, and a score-tracking table.
+
+**Process change from Phase 2 onward:** each step's design discussion includes a plain-language "what you need to understand here" note; each phase ends with a study digest + self-test before the next phase starts. Understanding is a deliverable, same as tests.
+
+---
+
 ## 2026-07-11 — Phase 1 COMPLETE: API verified end-to-end
 **Done:** Mark verified the full stack on his machine: 37 tests pass (after fixing a test that assumed the non-semantic FakeEmbedder would rank like a real one — caught by Mark's run), `httpx`→`httpx2` dev-dep swap silenced the starlette deprecation, and `/ask` via Swagger `/docs` returned a synthesized, multi-citation answer ([3][4][5][6] across FY2023–2025 Apple 10-Ks) for the supply-chain question.
 
