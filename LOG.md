@@ -4,6 +4,17 @@
 
 ---
 
+## 2026-07-08 — Step 1.5: retrieve + answer + CLI (code done; awaiting Mark's local run)
+**Done:** `retrieve.py` — question embedded with the same MiniLM model, Chroma query with optional ticker/year metadata filters, `Hit` carries text + full citation metadata + cosine score. `answer.py` — `LLM` protocol + `OllamaLLM` (local HTTP API, temperature 0, no new deps); grounding prompt (answer ONLY from numbered excerpts, cite [n], refuse rather than guess); `[n]` markers parsed and resolved back to exact chunks. `cli.py` — question + `--ticker/--year/-k/--model`, `--retrieve-only` debug mode, prints Sources with char offsets + URLs. 9 new tests: 5 pure (prompt rules, citation parsing, where-clauses) + 4 e2e with FakeEmbedder/FakeLLM/in-memory Chroma (ranking, filter isolation, citation resolution, not-found short-circuits without calling the LLM). 22 pass in sandbox; chroma-dependent ones run on Mark's machine.
+
+**Mark's thoughts:** Confirmed 1.4 local run (973 vectors, .chroma synced); pulled llama3.2; approved 1.5 design.
+
+**Claude's suggestions:** `--retrieve-only` to tell retrieval failures from generation failures when answers are bad; temperature 0 for factual mode; resolve citations only for markers the answer actually used.
+
+**Decision:** Committed. Mark runs: `pytest` (expect 31 passed) then first real question via CLI. Next: 1.6 golden Q&A eval set.
+
+---
+
 ## 2026-07-07 — Step 1.4: embed + index (code done; awaiting Mark's local run)
 **Done:** `embed.py` — `Embedder` protocol (provider abstraction), `LocalEmbedder` wrapping sentence-transformers `all-MiniLM-L6-v2` (normalized vectors, batches of 64), ChromaDB `filings` collection (cosine space, persisted in `.chroma/`), `upsert` for idempotent re-indexing, chunk metadata (ticker/fy/item/offsets/URL) stored on every vector so search hits carry their citations. Deps: sentence-transformers, chromadb. 3 new tests using a `FakeEmbedder` + in-memory Chroma: metadata storage, idempotency, nearest-neighbor retrieval of a planted chunk; `importorskip` since Claude's sandbox lacks chromadb. Prior 17 tests still pass.
 
