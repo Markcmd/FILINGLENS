@@ -4,6 +4,20 @@
 
 ---
 
+## 2026-07-08 — Step 1.7: FastAPI wrapper (code done) + Phase 1 retrospective
+**Done:** `api.py` — `POST /ask` (the future React UI's endpoint), `GET /search` (raw scored hits), `GET /health` (status + chunk count); Pydantic request/response models give validation (422s) and auto-generated interactive docs at `/docs`; embedder/collection/LLM are lru_cached singletons so the model loads once, not per request; tests override the dependency functions with fakes — 4 new tests via TestClient, no Ollama/model/disk needed. Deps: fastapi, uvicorn (+httpx dev). README rewritten with full usage. Expect 37 tests locally.
+
+**Phase 1 retrospective (for the interview):**
+- Built: EDGAR ingestion → canonical-text parsing with ToC-proof section detection → offset-exact chunking → local embeddings in ChromaDB → grounded Q&A with citations resolvable to exact characters of a specific filing → CLI + HTTP API → measured baseline (hit@6 87%, MRR 0.76, answers 47%).
+- Core invariant everything hangs on: `text[char_start:char_end] == chunk.text` — verified across all 973 chunks.
+- Bugs the tests caught pre-commit: ingest path collection bug; chunk overlap doubling on hard-split paragraphs.
+- Honest limitations, by design: llama3.2 paraphrases excerpts rather than synthesizing (measured, swappable); HTML tables embed poorly (Phase 4 XBRL is the numbers story); two retrieval misses analyzed (table flattening, cross-company confusion).
+- Every step: designed → discussed → approved → implemented → tested → logged.
+
+**Decision:** Phase 1 code complete pending Mark's local verification of the API. Mark: `pip install -e ".[dev]"` → `pytest` (expect 37) → `uvicorn filinglens.api:app` → try `/docs` in browser → push to GitHub. Then Phase 2 (MongoDB + Postgres/pgvector) design when ready.
+
+---
+
 ## 2026-07-08 — Step 1.6 results: baseline measured
 **Done:** Mark ran both eval modes. Retrieval: hit@6 = 87% (13/15), MRR = 0.76, 11 questions ranked #1. Answers (llama3.2): 47% pass. Baseline recorded in README.
 

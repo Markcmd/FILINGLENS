@@ -9,10 +9,12 @@ dependencies = [
     "lxml",
     "sentence-transformers",
     "chromadb",
+    "fastapi",
+    "uvicorn",
 ]
 
 [project.optional-dependencies]
-dev = ["pytest"]
+dev = ["pytest", "httpx"]  # httpx: required by FastAPI's TestClient
 
 [build-system]
 requires = ["hatchling"]

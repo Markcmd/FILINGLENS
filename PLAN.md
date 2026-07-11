@@ -28,7 +28,7 @@
 - [x] 1.4 Embed + index — sentence-transformers → ChromaDB (2026-07-07; Mark ran locally, 973 vectors indexed)
 - [x] 1.5 Retrieve + answer — provider abstraction, Ollama answers with citations, CLI (2026-07-08; Mark ran CLI, cited answer verified; 29 tests pass locally)
 - [x] 1.6 Golden Q&A eval set (2026-07-08; baseline: hit@6 87%, MRR 0.76, answers 47% — see README)
-- [ ] 1.7 FastAPI wrapper — minimal `/ask` endpoint
+- [>] 1.7 FastAPI wrapper — `/ask`, `/search`, `/health` (code done 2026-07-08; awaiting Mark's local `pytest` + `uvicorn filinglens.api:app` check)
 
 ## Phase 1 design (approved 2026-07-06)
 Pipeline: `ingest → parse → chunk → embed → retrieve → answer with citations`

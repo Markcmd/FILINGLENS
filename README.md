@@ -2,14 +2,39 @@
 
 Ask questions about SEC filings (10-K/10-Q) and get answers with exact citations back to the filing text — so every AI output is verifiable.
 
-**Status: in progress.** Currently building Phase 1: the core RAG pipeline (`ingest → parse → chunk → embed → retrieve → answer with citations`) over Apple, Microsoft, and Nvidia 10-Ks, running fully local (sentence-transformers + Ollama + ChromaDB).
+**Status: in progress.** Phase 1 — the core RAG pipeline (`ingest → parse → chunk → embed → retrieve → answer with citations`) over Apple, Microsoft, and Nvidia 10-Ks — is complete and runs fully local (sentence-transformers + Ollama + ChromaDB). No API keys, no cloud.
+
+Every answer cites exact character offsets into a specific SEC filing, so every claim is checkable against the source — retrieval *and* verification, not just generation.
 
 ## Setup
+
+Requires Python 3.10+ and [Ollama](https://ollama.com) with a model pulled (`ollama pull llama3.2`).
 
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
-pytest
+pytest                        # full suite, no network/model/Ollama needed
+```
+
+## Usage
+
+```bash
+# 1. Build the index (downloads 9 10-Ks from SEC EDGAR, ~1 min each step)
+python -m filinglens.ingest
+python -m filinglens.parse
+python -m filinglens.chunk
+python -m filinglens.embed
+
+# 2. Ask questions
+python -m filinglens.cli "What are Apple's supply chain risks?" --ticker AAPL
+python -m filinglens.cli "segment revenue" --retrieve-only   # debug retrieval
+
+# 3. Or serve the HTTP API (interactive docs at localhost:8000/docs)
+uvicorn filinglens.api:app
+
+# 4. Measure quality against the golden Q&A set
+python -m filinglens.eval             # retrieval metrics
+python -m filinglens.eval --with-llm  # + answer quality
 ```
 
 ## Evaluation
