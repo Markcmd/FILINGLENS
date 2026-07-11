@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest", "httpx"]  # httpx: required by FastAPI's TestClient
+dev = ["pytest", "httpx2"]  # httpx2: required by FastAPI's TestClient (successor to httpx, maintained by Pydantic)
 
 [build-system]
 requires = ["hatchling"]
