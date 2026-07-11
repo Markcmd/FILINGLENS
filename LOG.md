@@ -4,6 +4,17 @@
 
 ---
 
+## 2026-07-07 — Step 1.4: embed + index (code done; awaiting Mark's local run)
+**Done:** `embed.py` — `Embedder` protocol (provider abstraction), `LocalEmbedder` wrapping sentence-transformers `all-MiniLM-L6-v2` (normalized vectors, batches of 64), ChromaDB `filings` collection (cosine space, persisted in `.chroma/`), `upsert` for idempotent re-indexing, chunk metadata (ticker/fy/item/offsets/URL) stored on every vector so search hits carry their citations. Deps: sentence-transformers, chromadb. 3 new tests using a `FakeEmbedder` + in-memory Chroma: metadata storage, idempotency, nearest-neighbor retrieval of a planted chunk; `importorskip` since Claude's sandbox lacks chromadb. Prior 17 tests still pass.
+
+**Mark's thoughts:** Approved; noted he didn't fully understand embeddings/vector DBs yet — Claude explained (embeddings = meaning→vectors, Chroma = nearest-neighbor store, upsert = no duplicates). Revisit before interviews.
+
+**Claude's suggestions:** Lazy-import the heavy libs inside `LocalEmbedder`/`get_collection` so the rest of the package imports without them; test the pipeline through the abstraction with a deterministic fake instead of the real model — fast and no downloads.
+
+**Decision:** Committed. Mark to run locally: `pip install -e ".[dev]"` → `pytest` (expect 20 passed) → `python -m filinglens.embed` (expect "973 vectors"). Then design 1.5 (retrieve + answer).
+
+---
+
 ## 2026-07-07 — Step 1.3: parse + chunk (done)
 **Done:** `parse.py` — BeautifulSoup(+lxml) → normalized *canonical text* (the string all citation offsets point into) + section map via item-heading regex; ToC false positives handled by keeping the last occurrence of each item code, out-of-order stragglers dropped, whole-doc fallback if detection fails. `chunk.py` — paragraph packing into ≤500-word chunks (small-paragraph overlap), never crossing sections; each chunk = id + exact char offsets + filing metadata = the citation. Deps: beautifulsoup4, lxml. 8 new tests (17 total, all pass). Ran on all 9 real filings: 22–23 sections each, 973 chunks, **0 offset round-trip failures**.
 
