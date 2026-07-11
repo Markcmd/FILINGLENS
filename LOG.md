@@ -4,6 +4,19 @@
 
 ---
 
+## 2026-07-08 — Step 1.5 verified by Mark + step 1.6: golden eval set (code done)
+**Done (1.5 verification):** Mark ran the CLI on his machine — Apple supply-chain question returned a grounded answer citing AAPL FY2025 Item 1A chars 45464–48905 with the sec.gov URL; `--retrieve-only` showed sensible hits. 29 tests pass locally (Claude's earlier "31" was a miscount). Observations logged: llama3.2 answers near-verbatim rather than synthesizing (small-model behavior; eval will quantify, provider abstraction makes upgrades one-line); MSFT "Item 8 (FINANCIAL STATE)" title clipped by a mid-word line wrap (cosmetic); financial tables retrieve as flattened number-soup (expected; Phase 4 XBRL is the real fix for numbers).
+
+**Done (1.6):** `eval/golden_qa.jsonl` — 15 questions across all 3 companies; expectations are (ticker, acceptable items, must-contain phrase), never chunk ids, so the set survives re-chunking. Every phrase verified to exist in the real chunks (15/15). `eval.py` — hit@k + MRR for retrieval; `--with-llm` answer check (not a refusal + expected keywords + >=1 citation pointing at a matching chunk). 4 new pure tests incl. golden-file validation. 26 pass in sandbox / 33 expected locally.
+
+**Mark's thoughts:** Asked what HF Hub was (answer: model download source only — everything runs locally) and how the code reaches Ollama (answer: background service on localhost:11434, spoken to over HTTP). Approved 1.6 design.
+
+**Claude's suggestions:** Draft golden questions from phrases grep-verified in the actual filings so expectations are guaranteed satisfiable; keep eval expectations chunk-id-free.
+
+**Decision:** Committed. Mark runs `python -m filinglens.eval` (retrieval-only, fast) and `python -m filinglens.eval --with-llm` (slow, ~15 Ollama calls); numbers go into README. Then 1.7 (FastAPI) closes Phase 1.
+
+---
+
 ## 2026-07-08 — Step 1.5: retrieve + answer + CLI (code done; awaiting Mark's local run)
 **Done:** `retrieve.py` — question embedded with the same MiniLM model, Chroma query with optional ticker/year metadata filters, `Hit` carries text + full citation metadata + cosine score. `answer.py` — `LLM` protocol + `OllamaLLM` (local HTTP API, temperature 0, no new deps); grounding prompt (answer ONLY from numbered excerpts, cite [n], refuse rather than guess); `[n]` markers parsed and resolved back to exact chunks. `cli.py` — question + `--ticker/--year/-k/--model`, `--retrieve-only` debug mode, prints Sources with char offsets + URLs. 9 new tests: 5 pure (prompt rules, citation parsing, where-clauses) + 4 e2e with FakeEmbedder/FakeLLM/in-memory Chroma (ranking, filter isolation, citation resolution, not-found short-circuits without calling the LLM). 22 pass in sandbox; chroma-dependent ones run on Mark's machine.
 

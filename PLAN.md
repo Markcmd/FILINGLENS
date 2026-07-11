@@ -26,8 +26,8 @@
 - [x] 1.2 Ingest — EDGAR client downloading AAPL/MSFT/NVDA 10-Ks, cached to `data/raw/` (2026-07-07; Mark to run `python -m filinglens.ingest` locally)
 - [x] 1.3 Parse + chunk — section-aware item splitting, ~600-token chunks with citation metadata (2026-07-07; 973 chunks across 9 filings, offsets verified)
 - [x] 1.4 Embed + index — sentence-transformers → ChromaDB (2026-07-07; Mark ran locally, 973 vectors indexed)
-- [>] 1.5 Retrieve + answer — provider abstraction, Ollama answers with citations, CLI (code + tests done 2026-07-08; awaiting Mark's local CLI run against llama3.2)
-- [ ] 1.6 Golden Q&A eval set — `eval/golden_qa.jsonl` + retrieval scoring
+- [x] 1.5 Retrieve + answer — provider abstraction, Ollama answers with citations, CLI (2026-07-08; Mark ran CLI, cited answer verified; 29 tests pass locally)
+- [>] 1.6 Golden Q&A eval set — `eval/golden_qa.jsonl` + retrieval scoring (code done 2026-07-08; awaiting Mark's local run: `python -m filinglens.eval` then `--with-llm`)
 - [ ] 1.7 FastAPI wrapper — minimal `/ask` endpoint
 
 ## Phase 1 design (approved 2026-07-06)
