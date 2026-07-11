@@ -4,6 +4,17 @@
 
 ---
 
+## 2026-07-08 — Step 1.6 results: baseline measured
+**Done:** Mark ran both eval modes. Retrieval: hit@6 = 87% (13/15), MRR = 0.76, 11 questions ranked #1. Answers (llama3.2): 47% pass. Baseline recorded in README.
+
+**Analysis:** Retrieval misses: `aapl_greater_china` (phrase partly in flattened segment tables — embeddings of number-soup are weak) and `aapl_climate` (likely outranked by MSFT/NVDA climate chunks — cross-company confusion in unfiltered search). Answer failures include 5 questions where retrieval was rank 1 but generation failed the check (dropped [n] markers / missing keyword) — bottleneck is the small model, not retrieval. Measuring the two separately is what makes that diagnosis possible.
+
+**Improvement backlog (later phases):** better table handling (Phase 2 storage / Phase 4 XBRL for numbers), metadata-aware ranking boosts, stronger LLM via the provider abstraction.
+
+**Decision:** Baseline accepted; numbers in README. Next: 1.7 FastAPI wrapper to close Phase 1.
+
+---
+
 ## 2026-07-08 — Step 1.5 verified by Mark + step 1.6: golden eval set (code done)
 **Done (1.5 verification):** Mark ran the CLI on his machine — Apple supply-chain question returned a grounded answer citing AAPL FY2025 Item 1A chars 45464–48905 with the sec.gov URL; `--retrieve-only` showed sensible hits. 29 tests pass locally (Claude's earlier "31" was a miscount). Observations logged: llama3.2 answers near-verbatim rather than synthesizing (small-model behavior; eval will quantify, provider abstraction makes upgrades one-line); MSFT "Item 8 (FINANCIAL STATE)" title clipped by a mid-word line wrap (cosmetic); financial tables retrieve as flattened number-soup (expected; Phase 4 XBRL is the real fix for numbers).
 

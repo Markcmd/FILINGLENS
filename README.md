@@ -12,6 +12,20 @@ pip install -e ".[dev]"
 pytest
 ```
 
+## Evaluation
+
+A golden Q&A set (`eval/golden_qa.jsonl`, 15 questions across the three companies) measures retrieval and answer quality separately — run `python -m filinglens.eval [--with-llm]`.
+
+Baseline (2026-07-08, all-MiniLM-L6-v2 + llama3.2, fully local):
+
+| Metric | Score |
+|---|---|
+| Retrieval hit@6 | 87% |
+| Retrieval MRR | 0.76 |
+| Answer pass rate (llama3.2) | 47% |
+
+Several answer failures occur on questions where retrieval ranked the correct chunk #1 — the bottleneck is the small local model's generation (dropped citations, missed synthesis), not retrieval. The LLM sits behind a provider abstraction, so stronger models can be swapped in to move that number.
+
 ## Roadmap
 
 1. **Core RAG slice (Python)** — EDGAR ingestion, section-aware chunking, local embeddings, cited answers via CLI/API *(current)*

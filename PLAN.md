@@ -27,7 +27,7 @@
 - [x] 1.3 Parse + chunk — section-aware item splitting, ~600-token chunks with citation metadata (2026-07-07; 973 chunks across 9 filings, offsets verified)
 - [x] 1.4 Embed + index — sentence-transformers → ChromaDB (2026-07-07; Mark ran locally, 973 vectors indexed)
 - [x] 1.5 Retrieve + answer — provider abstraction, Ollama answers with citations, CLI (2026-07-08; Mark ran CLI, cited answer verified; 29 tests pass locally)
-- [>] 1.6 Golden Q&A eval set — `eval/golden_qa.jsonl` + retrieval scoring (code done 2026-07-08; awaiting Mark's local run: `python -m filinglens.eval` then `--with-llm`)
+- [x] 1.6 Golden Q&A eval set (2026-07-08; baseline: hit@6 87%, MRR 0.76, answers 47% — see README)
 - [ ] 1.7 FastAPI wrapper — minimal `/ask` endpoint
 
 ## Phase 1 design (approved 2026-07-06)
