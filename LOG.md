@@ -4,6 +4,31 @@
 
 ---
 
+## 2026-07-16 — Stray one-pass scaffold found and deleted
+**Done:** Mark noticed 1K+ untracked changes in git. Investigation: an uncommitted `backend/` (FastAPI + SQLAlchemy + OpenAI extractor/verifier), `frontend/` (React/TS Vite incl. node_modules ≈2,400 files), `docker-compose.yml`, and `docs/DESIGN.md` had appeared in the repo folder. Not created by any Claude session on this machine (transcripts checked). Timestamps indicate a one-pass prototype of the *original* FilingLens concept (extractor + XBRL verifier) dating to 2026-07-05 — before the step-by-step plan existed — that OneDrive synced onto this Mac the evening of 2026-07-14. It conflicted with the approved architecture (SQLAlchemy/OpenAI/no-RAG vs psycopg/local-models/citations) and with Phase 2.1's planned docker-compose.yml.
+
+**Decision:** Mark chose to delete it (offered move-out-as-reference as alternative). Deleted 2026-07-16; git back to clean except the intentional PLAN.md/LOG.md edits. Nothing from Phase 1 was affected; nothing had been committed. Reminder for Phase 3: add `node_modules/` to .gitignore before any frontend work.
+**Done:** Phase 2 (storage layer) design discussed and written into PLAN.md: 7 sub-steps (2.1 Docker infra → 2.2 Mongo filing store → 2.3 Postgres schema/migrations → 2.4 PgVector store → 2.5 eval parity gate → 2.6 Q&A history → 2.7 phase close with study digest). Sub-step breakdown awaiting Mark's explicit approval; implementation additionally gated on the Phase 1 retest.
+
+**Mark's thoughts:** Studying Phase 1 in a parallel Opus 4.8 session while this session handles Phase 2 design. Chose all three recommended options on the design decisions.
+
+**Claude's suggestions (the three decisions):** (3) Raw SQL via psycopg 3 over SQLAlchemy — quiz showed mechanics are the weak spot, so every query should be one Mark wrote and can defend; (4) Docker Compose for local DBs — standard practice and rehearses the Phase 6 deploy; (5) Mongo as source of truth (ingest writes to it, parse reads from it, `data/raw/` demoted to cache) over a decorative sidecar copy — "why is Mongo there?" must have an honest answer. Also framed the phase's engineering heart: the citation invariant now spans two stores (Postgres chunk offsets → Mongo canonical text), verified by integration tests. Eval parity (2.5) is the migration's proof: same golden set, numbers must match hit@6 87% / MRR 0.76.
+
+**Decision:** Design recorded; decisions 3–5 in PLAN.md table. Next: Mark approves the sub-step breakdown, passes the Phase 1 retest, then 2.1 begins (Mark installs Docker Desktop as prep).
+
+---
+
+## 2026-07-13 — Phase 1 self-test baseline (live quiz)
+**Done:** Mark took the 20-question Phase 1 self-test cold, live with Claude. Baseline: **5.5/20 (27.5%)**, four Tier-1 zeros (Q3 citation invariant, Q4 grounding, Q5 retrieval-vs-answer diagnosis, Q6 MRR). Score recorded in `Phase1_Study_Guide.md` (outside repo). Strongest answer: Q9 shared embedding space (full credit); solid instincts on chunking rationale and gitignore-as-build-artifact.
+
+**Mark's thoughts:** Chose the live quiz over self-study when the untaken test was flagged before Phase 2.
+
+**Claude's suggestions:** Study priority = the four Tier-1 zeros first — they are the verifiability + eval story, i.e. the project's pitch — then Tier-2 mechanics (upsert/idempotency, fakes in tests, overlap-doubling bug, FastAPI declarations). Use the study guide's methods: trace `AAPL_2025_item1A_003` end to end, Feynman the Tier-1 concepts, retell the Q14 bug story from chunk.py.
+
+**Decision:** Per working agreement (pass ≥70%, no Tier-1 zeros, before next phase), Phase 2 implementation waits for a passing retest. Mark studies in a **separate session (Opus 4.8)** using `Phase1_Study_Guide.md`; **this session proceeds with Phase 2 design discussion only**. Retest scores go into the study guide's table.
+
+---
+
 ## 2026-07-11 — Mark's Phase 1 reflection (recorded at his request)
 **Mark's thoughts (verbatim spirit):** Claude is amazing, but he barely understands the code and logic, which feels bad — the desire to know everything collides with anxiety. Line-by-line study is too slow at his current level; picking key points to understand deeply feels reasonable. Wants interview questions covering only those points, and a measurable understanding metric (target: ~70%).
 
